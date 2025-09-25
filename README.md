@@ -1,24 +1,237 @@
-Healthcare Backend APIA robust and secure backend API for a healthcare management application, built with Django and Django REST Framework. This service provides a complete solution for user authentication, managing patient and doctor records, and establishing relationships between them.Table of ContentsKey FeaturesTechnology StackGetting StartedPrerequisitesInstallation and SetupAPI Endpoint GuideAuthenticationDoctorsPatientsMappingsUsage WorkflowAdmin InterfaceKey Features ✨Secure JWT Authentication: State-of-the-art user authentication using djangorestframework-simplejwt.Complete Patient Management: Full CRUD (Create, Read, Update, Delete) capabilities for patient data.Complete Doctor Management: Full CRUD capabilities for doctor profiles.Role-Based Permissions: Users can only access and manage the patient records that they have personally created, ensuring data privacy.Relational Mapping: A dedicated endpoint to create and manage the many-to-many relationships between patients and doctors.Scalable Architecture: Built with a clean and organized structure that is easy to extend.Technology Stack 🛠️Backend Framework: DjangoAPI Framework: Django REST Framework (DRF)Database: PostgreSQLAuthentication: JSON Web Tokens (JWT)Configuration: python-decouple for managing environment variables.Getting Started 🚀Follow these instructions to set up and run the project on your local machine.PrerequisitesPython (version 3.8 or higher)PostgreSQLA code editor like VS CodeInstallation and SetupClone the Repositorygit clone <your-repository-url>
-cd healthcare_project
-Create and Activate a Virtual Environment# For Windows
-python -m venv venv
-venv\Scripts\activate
+# Healthcare Management System
 
-# For macOS/Linux
-python3 -m venv venv
-source venv/bin/activate
-Install Project Dependenciespip install -r requirements.txt
-Configure Environment VariablesCreate a .env file in the project's root directory and populate it with your credentials..env example:SECRET_KEY='your-super-secret-key-goes-here'
-DB_NAME='healthcare_db'
-DB_USER='your_postgres_username'
-DB_PASSWORD='your_postgres_password'
-DB_HOST='localhost'
-DB_PORT='5432'
-Set Up the PostgreSQL DatabaseYou must create the database and user role in PostgreSQL before running the application.-- Connect to psql as a superuser
-CREATE ROLE your_postgres_username WITH LOGIN PASSWORD 'your_postgres_password';
-CREATE DATABASE healthcare_db OWNER your_postgres_username;
-Apply Database MigrationsThis will create the necessary tables in your database.python manage.py makemigrations api
-python manage.py migrate
-Launch the Server!python manage.py runserver
-The API is now live and accessible at http://127.0.0.1:8000/.API Endpoint Guide 📖All endpoints are prefixed with /api. Authentication is required for all endpoints except for registration and login.AuthenticationMethodEndpointDescriptionPOST/register/Creates a new user account.POST/token/Logs a user in and returns access/refresh JWT tokens.POST/token/refresh/Provides a new access token using a valid refresh token.DoctorsMethodEndpointDescriptionGET/doctors/Retrieves a list of all doctors.POST/doctors/Creates a new doctor record.GET/doctors/<id>/Retrieves details of a specific doctor.PUT/doctors/<id>/Updates the details of a specific doctor.DELETE/doctors/<id>/Deletes a specific doctor.PatientsMethodEndpointDescriptionGET/patients/Retrieves a list of patients created by the logged-in user.POST/patients/Creates a new patient record, assigned to the logged-in user.GET/patients/<id>/Retrieves a specific patient owned by the user.PUT/patients/<id>/Updates a specific patient owned by the user.DELETE/patients/<id>/Deletes a specific patient owned by the user.MappingsMethodEndpointDescriptionPOST/mappings/Creates a link between a patient and a doctor.GET/mappings/<id>/Retrieves details of a specific mapping.DELETE/mappings/<id>/Deletes a specific patient-doctor mapping.Usage Workflow 📈Register: Create an account via the /api/register/ endpoint.Login: Send your credentials to /api/token/ to receive your JWT access token.Authorize: For all protected requests, include the token in the Authorization header.Header Key: AuthorizationHeader Value: Bearer <your_access_token>Interact: Make requests to the API endpoints to manage your data.Admin Interface 🧑‍💻This project includes a fully functional Django Admin interface for easy data management.Create a Superuserpython manage.py createsuperuser
-Follow the prompts to create your admin account.Access the Admin PanelNavigate to http://127.0.0.1:8000/admin/ in your browser and log in with your superuser credentials.
+A Django REST API-based healthcare management system that allows users to manage patients, doctors, and their relationships. The system includes authentication, patient-doctor mappings, and secure data access controls.
+
+## 🚀 Features
+
+- **User Authentication**: JWT-based authentication system with user registration and login
+- **Patient Management**: Create, read, update, and delete patient records
+- **Doctor Management**: Manage doctor profiles with specializations
+- **Patient-Doctor Mapping**: Establish relationships between patients and doctors
+- **Security**: Custom permissions ensuring users can only access their own patient data
+- **RESTful API**: Clean, well-documented API endpoints
+
+## 🛠️ Technology Stack
+
+- **Backend**: Django 5.2.6 + Django REST Framework 3.16.1
+- **Database**: PostgreSQL
+- **Authentication**: JWT (JSON Web Tokens) with SimpleJWT
+- **Environment Management**: python-decouple
+- **Additional Libraries**: 
+  - TensorFlow/OpenCV for AI/ML capabilities
+  - Streamlit for potential web interface
+  - Various data science and image processing libraries
+
+## 📋 Prerequisites
+
+- Python 3.8+
+- PostgreSQL
+- pip (Python package manager)
+
+## 🔧 Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd healthcare_project
+   ```
+
+2. **Create and activate virtual environment**
+   ```bash
+   # Windows
+   python -m venv venv
+   venv\Scripts\activate
+
+   # Linux/Mac
+   python -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Environment Configuration**
+   Create a `.env` file in the project root with the following variables:
+   ```env
+   SECRET_KEY=your-secret-key-here
+   DB_NAME=your-database-name
+   DB_USER=your-database-user
+   DB_PASSWORD=your-database-password
+   DB_HOST=localhost
+   DB_PORT=5432
+   ```
+
+5. **Database Setup**
+   ```bash
+   # Create database migrations
+   python manage.py makemigrations
+   
+   # Apply migrations
+   python manage.py migrate
+   
+   # Create superuser (optional)
+   python manage.py createsuperuser
+   ```
+
+6. **Run the server**
+   ```bash
+   python manage.py runserver
+   ```
+
+The API will be available at `http://localhost:8000/api/`
+
+## 📚 API Endpoints
+
+### Authentication
+- `POST /api/register/` - User registration
+- `POST /api/token/` - Login (obtain JWT tokens)
+- `POST /api/token/refresh/` - Refresh JWT tokens
+
+### Doctors
+- `GET /api/doctors/` - List all doctors
+- `POST /api/doctors/` - Create new doctor
+- `GET /api/doctors/{id}/` - Get doctor details
+- `PUT /api/doctors/{id}/` - Update doctor
+- `DELETE /api/doctors/{id}/` - Delete doctor
+
+### Patients
+- `GET /api/patients/` - List user's patients
+- `POST /api/patients/` - Create new patient
+- `GET /api/patients/{id}/` - Get patient details
+- `PUT /api/patients/{id}/` - Update patient
+- `DELETE /api/patients/{id}/` - Delete patient
+
+### Patient-Doctor Mappings
+- `GET /api/mappings/` - List all mappings
+- `POST /api/mappings/` - Create new mapping
+- `GET /api/mappings/{id}/` - Get mapping details
+- `DELETE /api/mappings/{id}/` - Delete mapping
+
+## 🔐 Authentication
+
+The API uses JWT authentication. Include the access token in your requests:
+
+```bash
+curl -H "Authorization: Bearer your-access-token" http://localhost:8000/api/patients/
+```
+
+## 📊 Data Models
+
+### User
+- Custom user model extending Django's AbstractUser
+- Supports future extensions for healthcare-specific user fields
+
+### Doctor
+- `name`: Doctor's name
+- `specialization`: Medical specialization
+
+### Patient
+- `name`: Patient's name
+- `date_of_birth`: Patient's date of birth
+- `address`: Patient's address
+- `created_by`: User who created the patient record
+- `doctors`: Many-to-many relationship with doctors
+
+### PatientDoctorMapping
+- Links patients to doctors
+- Ensures unique patient-doctor relationships
+
+## 🔒 Security Features
+
+- **JWT Authentication**: Secure token-based authentication
+- **Custom Permissions**: Users can only access their own patient records
+- **Password Hashing**: Automatic password hashing for user accounts
+- **CSRF Protection**: Built-in Django CSRF protection
+- **Environment Variables**: Sensitive data stored in environment variables
+
+## 🧪 Testing the API
+
+### Register a new user
+```bash
+curl -X POST http://localhost:8000/api/register/ \
+  -H "Content-Type: application/json" \
+  -d '{"username": "testuser", "password": "testpass123"}'
+```
+
+### Login
+```bash
+curl -X POST http://localhost:8000/api/token/ \
+  -H "Content-Type: application/json" \
+  -d '{"username": "testuser", "password": "testpass123"}'
+```
+
+### Create a doctor (with authentication)
+```bash
+curl -X POST http://localhost:8000/api/doctors/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer your-access-token" \
+  -d '{"name": "Dr. Smith", "specialization": "Cardiology"}'
+```
+
+### Create a patient (with authentication)
+```bash
+curl -X POST http://localhost:8000/api/patients/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer your-access-token" \
+  -d '{"name": "John Doe", "date_of_birth": "1990-01-01", "address": "123 Main St"}'
+```
+
+## 🗂️ Project Structure
+
+```
+healthcare_project/
+├── api/                          # Main application
+│   ├── models.py                 # Database models
+│   ├── views.py                  # API views
+│   ├── serializers.py            # Data serializers
+│   ├── urls.py                   # URL routing
+│   ├── admin.py                  # Django admin configuration
+│   └── migrations/               # Database migrations
+├── healthcare_project/           # Django project settings
+│   ├── settings.py               # Project configuration
+│   ├── urls.py                   # Main URL routing
+│   └── wsgi.py                   # WSGI configuration
+├── venv/                         # Virtual environment
+├── requirements.txt              # Python dependencies
+├── manage.py                     # Django management script
+└── README.md                     # This file
+```
+
+## 🚀 Deployment
+
+For production deployment:
+
+1. Set `DEBUG = False` in settings.py
+2. Configure `ALLOWED_HOSTS` with your domain
+3. Set up a production database
+4. Configure static file serving
+5. Use a production WSGI server like Gunicorn
+6. Set up environment variables securely
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🆘 Support
+
+If you encounter any issues or have questions, please open an issue in the repository or contact the development team.
+
+## 🔮 Future Enhancements
+
+- Appointment scheduling system
+- Medical record management
+- Prescription tracking
+- Telemedicine features
+- Mobile app integration
+- Advanced analytics and reporting
+- Integration with external healthcare systems
