@@ -1,0 +1,2 @@
+create user : python manage.py createsuperuser
+for run the code  : python manage.py runserver
