@@ -1,109 +1,264 @@
 Healthcare Backend API
-A robust backend service for a healthcare application built with Django and Django REST Framework. This API provides functionalities for user management, patient and doctor records, and the mapping between them, all secured with JWT authentication.
+A robust and secure backend API for a healthcare management application, built with Django and Django REST Framework. This service provides a complete solution for user authentication, managing patient and doctor records, and establishing relationships between them.
 
-Features 🚀
-JWT Authentication: Secure user authentication using JSON Web Tokens.
+Table of Contents
+Key Features
 
-User Registration & Login: Endpoints for creating new user accounts and logging in.
+Technology Stack
 
-Patient Management: Full CRUD (Create, Read, Update, Delete) operations for patient records.
+Getting Started
 
-Doctor Management: Full CRUD operations for doctor records.
+Prerequisites
 
-Patient-Doctor Mapping: Functionality to link patients with doctors.
+Installation and Setup
 
-Permission Control: Users can only view and manage the patient records they have created.
+API Endpoint Guide
 
-Technologies Used 🛠️
-Backend: Django, Django REST Framework
+Authentication
+
+Doctors
+
+Patients
+
+Mappings
+
+Usage Workflow
+
+Admin Interface
+
+Key Features ✨
+Secure JWT Authentication: State-of-the-art user authentication using djangorestframework-simplejwt.
+
+Complete Patient Management: Full CRUD (Create, Read, Update, Delete) capabilities for patient data.
+
+Complete Doctor Management: Full CRUD capabilities for doctor profiles.
+
+Role-Based Permissions: Users can only access and manage the patient records that they have personally created, ensuring data privacy.
+
+Relational Mapping: A dedicated endpoint to create and manage the many-to-many relationships between patients and doctors.
+
+Scalable Architecture: Built with a clean and organized structure that is easy to extend.
+
+Technology Stack 🛠️
+Backend Framework: Django
+
+API Framework: Django REST Framework (DRF)
 
 Database: PostgreSQL
 
-Authentication: djangorestframework-simplejwt
+Authentication: JSON Web Tokens (JWT)
 
-Environment Variables: python-decouple
+Configuration: python-decouple for managing environment variables.
 
-Setup and Installation
-Follow these steps to get the project running locally.
+Getting Started 🚀
+Follow these instructions to set up and run the project on your local machine.
 
-1. Prerequisites
-Python 3.8+
+Prerequisites
+Python (version 3.8 or higher)
 
 PostgreSQL
 
-2. Clone the Repository
-Bash
+A code editor like VS Code
+
+Installation and Setup
+Clone the Repository
 
 git clone <your-repository-url>
 cd healthcare_project
-3. Set Up Virtual Environment
-Bash
 
-# Create a virtual environment
+Create and Activate a Virtual Environment
+
+# For Windows
 python -m venv venv
-
-# Activate it (Windows)
 venv\Scripts\activate
 
-# Activate it (macOS/Linux)
+# For macOS/Linux
+python3 -m venv venv
 source venv/bin/activate
-4. Install Dependencies
-Bash
+
+Install Project Dependencies
 
 pip install -r requirements.txt
-5. Configure Environment Variables
-Create a .env file in the project root directory. You can copy the example below.
 
-Code snippet
+Configure Environment Variables
+Create a .env file in the project's root directory and populate it with your credentials.
 
-# .env file
-SECRET_KEY='your-strong-and-unique-secret-key'
+.env example:
+
+SECRET_KEY='your-super-secret-key-goes-here'
 DB_NAME='healthcare_db'
-DB_USER='your_db_user'
-DB_PASSWORD='your_db_password'
+DB_USER='your_postgres_username'
+DB_PASSWORD='your_postgres_password'
 DB_HOST='localhost'
 DB_PORT='5432'
-6. Set Up the Database
-Connect to PostgreSQL and create the database and user role.
 
-SQL
+Set Up the PostgreSQL Database
+You must create the database and user role in PostgreSQL before running the application.
 
--- Run these commands in psql
-CREATE ROLE your_db_user WITH LOGIN PASSWORD 'your_db_password';
-CREATE DATABASE healthcare_db OWNER your_db_user;
-7. Run Migrations
-Apply the database migrations to create the necessary tables.
+-- Connect to psql as a superuser
+CREATE ROLE your_postgres_username WITH LOGIN PASSWORD 'your_postgres_password';
+CREATE DATABASE healthcare_db OWNER your_postgres_username;
 
-Bash
+Apply Database Migrations
+This will create the necessary tables in your database.
 
+python manage.py makemigrations api
 python manage.py migrate
-8. Run the Server
-Start the Django development server.
 
-Bash
+Launch the Server!
 
 python manage.py runserver
-The API will be available at http://127.0.0.1:8000/.
 
-API Endpoints
-All endpoints are prefixed with /api/.
+The API is now live and accessible at http://127.0.0.1:8000/.
 
-Endpoint	Method	Description	Auth Required
-/register/	POST	Register a new user.	No
-/token/	POST	Log in to obtain JWT access and refresh tokens.	No
-/token/refresh/	POST	Get a new access token using a refresh token.	No
-/doctors/	GET, POST	List all doctors or create a new one.	Yes
-/doctors/<id>/	GET, PUT, DELETE	Retrieve, update, or delete a specific doctor.	Yes
-/patients/	GET, POST	List your patients or create a new one.	Yes
-/patients/<id>/	GET, PUT, DELETE	Retrieve, update, or delete one of your patients.	Yes
-/mappings/	GET, POST	List all mappings or link a patient to a doctor.	Yes
-/mappings/<id>/	GET, DELETE	Retrieve or delete a specific mapping.	Yes
+API Endpoint Guide 📖
+All endpoints are prefixed with /api. Authentication is required for all endpoints except for registration and login.
 
-Export to Sheets
-Example Usage
-Register a user by sending a POST request to /api/register/.
+Authentication
+Method
 
-Log in by sending a POST request to /api/token/ with the user's credentials to get an access token.
+Endpoint
 
-Access a protected endpoint (e.g., GET /api/patients/) by including the token in the Authorization header:
-Authorization: Bearer <your_access_token>
+Description
+
+POST
+
+/register/
+
+Creates a new user account.
+
+POST
+
+/token/
+
+Logs a user in and returns access/refresh JWT tokens.
+
+POST
+
+/token/refresh/
+
+Provides a new access token using a valid refresh token.
+
+Doctors
+Method
+
+Endpoint
+
+Description
+
+GET
+
+/doctors/
+
+Retrieves a list of all doctors.
+
+POST
+
+/doctors/
+
+Creates a new doctor record.
+
+GET
+
+/doctors/<id>/
+
+Retrieves details of a specific doctor.
+
+PUT
+
+/doctors/<id>/
+
+Updates the details of a specific doctor.
+
+DELETE
+
+/doctors/<id>/
+
+Deletes a specific doctor.
+
+Patients
+Method
+
+Endpoint
+
+Description
+
+GET
+
+/patients/
+
+Retrieves a list of patients created by the logged-in user.
+
+POST
+
+/patients/
+
+Creates a new patient record, assigned to the logged-in user.
+
+GET
+
+/patients/<id>/
+
+Retrieves a specific patient owned by the user.
+
+PUT
+
+/patients/<id>/
+
+Updates a specific patient owned by the user.
+
+DELETE
+
+/patients/<id>/
+
+Deletes a specific patient owned by the user.
+
+Mappings
+Method
+
+Endpoint
+
+Description
+
+POST
+
+/mappings/
+
+Creates a link between a patient and a doctor.
+
+GET
+
+/mappings/<id>/
+
+Retrieves details of a specific mapping.
+
+DELETE
+
+/mappings/<id>/
+
+Deletes a specific patient-doctor mapping.
+
+Usage Workflow 📈
+Register: Create an account via the /api/register/ endpoint.
+
+Login: Send your credentials to /api/token/ to receive your JWT access token.
+
+Authorize: For all protected requests, include the token in the Authorization header.
+
+Header Key: Authorization
+
+Header Value: Bearer <your_access_token>
+
+Interact: Make requests to the API endpoints to manage your data.
+
+Admin Interface 🧑‍💻
+This project includes a fully functional Django Admin interface for easy data management.
+
+Create a Superuser
+
+python manage.py createsuperuser
+
+Follow the prompts to create your admin account.
+
+Access the Admin Panel
+Navigate to http://127.0.0.1:8000/admin/ in your browser and log in with your superuser credentials.
